@@ -5,10 +5,9 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
-import numkeyboard from 'vue-numkeyboard';
+import '@mdi/font/css/materialdesignicons.css'
 import 'vue-numkeyboard/style.css';
 
-Vue.use(numkeyboard);
 Vue.config.productionTip = false
 
 new Vue({

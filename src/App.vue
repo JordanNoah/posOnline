@@ -47,7 +47,7 @@
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </v-toolbar>
-            <v-card :height="this.windowSizeHeight - 72" style="overflow:auto">
+            <v-card :height="this.windowSizeHeight - 74.4" style="overflow:auto" elevation="0" outlined tile>
               <v-container>
                 <v-row>
                   <v-col v-for="a in 13" cols="3" :key="a">
@@ -76,12 +76,15 @@
               </v-container>
             </v-card>
             <v-system-bar>
-              <span>12:30</span>
+              <v-card elevation="0" style="background-color:#e0e0e0" class="mx-1 px-1">
+                <clock />
+              </v-card>
+              <v-card elevation="0" style="background-color:#e0e0e0" class="mx-1 px-1"><span>v: 0.01</span></v-card>
               <v-spacer></v-spacer>
               <v-icon>fas fa-exclamation-triangle</v-icon>
               <v-icon>fas fa-battery-full</v-icon>
-              <v-icon>fas fa-wifi</v-icon>
-              <v-icon>fas fa-sync-alt</v-icon>
+              <internet></internet>
+              <sync></sync>
             </v-system-bar>
           </v-col>
           <v-col cols="4">
@@ -100,7 +103,7 @@
               </v-list>
             </v-card>
             <v-card :height="this.windowSizeHeight * 0.05" elevation="0" outlined tile>
-              <v-btn height="100%" width="100%" elevation="0">
+              <v-btn height="100%" width="100%" elevation="0" tile>
                 <v-icon dense class="mx-2">
                   fas fa-user
                 </v-icon>
@@ -122,6 +125,9 @@
 <script>
 import keyboard from '../src/components/Keyboard'
 import cartList from '../src/components/CartList'
+import clock from '../src/components/Clock'
+import internet from '../src/components/Internet'
+import sync from '../src/components/Sync'
   export default {
     name: 'App',
 
@@ -138,7 +144,10 @@ import cartList from '../src/components/CartList'
     created() {},
     components: {
       keyboard,
-      cartList
+      cartList,
+      clock,
+      internet,
+      sync
     },
     methods: {
       onResize() {
