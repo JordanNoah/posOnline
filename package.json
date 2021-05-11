@@ -10,17 +10,17 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "localbase": "^0.7.5",
     "moment": "^2.29.1",
-    "node-wifi": "^2.0.14",
-    "ping": "^0.4.1",
-    "react-wifi-indicator": "^1.0.1",
+    "rive-canvas": "^0.7.3",
+    "rive-js": "^0.7.7",
     "roboto-fontface": "*",
     "vue": "^2.6.11",
-    "vue-numkeyboard": "^1.1.2",
+    "vue-rive": "0.0.3",
     "vue-router": "^3.2.0",
+    "vue-sweetalert-icons": "^4.3.0",
     "vuetify": "^2.4.0",
-    "vuex": "^3.4.0",
-    "wifi-control": "^2.0.1"
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",

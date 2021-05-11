@@ -24,6 +24,10 @@
                         {{ user.email }}
                       </p>
                       <v-divider class="my-3"></v-divider>
+                        <v-btn depressed text @click="dialog=true">
+                          Sync Database
+                        </v-btn>
+                      <v-divider class="my-3"></v-divider>
                       <v-btn depressed rounded text>
                         Edit Account
                       </v-btn>
@@ -41,50 +45,27 @@
                 <v-icon>mdi-magnify</v-icon>
               </v-btn>
               <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-              <v-btn icon>
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </v-toolbar>
             <v-card :height="this.windowSizeHeight - 74.4" style="overflow:auto" elevation="0" outlined tile>
-              <v-container>
-                <v-row>
-                  <v-col v-for="a in 13" cols="3" :key="a">
-                    <v-card>
-                      <v-img src="https://picsum.photos/500/300?image=15"
-                        lazy-src="https://picsum.photos/500/300?image=15" height="200"
-                        class="white--text grey darken-4">
-                        <template v-slot:placeholder>
-                          <v-row class="fill-height ma-0" align="center" justify="center">
-                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                          </v-row>
-                        </template>
-                        <v-container fluid fill-height class="ma-0 pa-0 d-flex align-end flex-column">
-                          <v-card class="mb-auto pa-2 text-lg-right font-weight-medium" tile elevation="0"
-                            color="rgba(255, 255, 255, 0.50)">
-                            $ 13.50
-                          </v-card>
-                        </v-container>
-                      </v-img>
-                      <v-card-title class="body-1 pa-3 font-weight-medium">
-                        Flex item 2
-                      </v-card-title>
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-container>
+              <products />
             </v-card>
             <v-system-bar>
               <v-card elevation="0" style="background-color:#e0e0e0" class="mx-1 px-1">
                 <clock />
               </v-card>
               <v-card elevation="0" style="background-color:#e0e0e0" class="mx-1 px-1"><span>v: 0.01</span></v-card>
+              <v-card elevation="0" style="background-color:#e0e0e0" class="mx-1 px-1">
+                <span>
+                  {{this.$store.state.numberOfAction}}
+                </span>
+              </v-card>
               <v-spacer></v-spacer>
               <v-icon>fas fa-exclamation-triangle</v-icon>
               <v-icon>fas fa-battery-full</v-icon>
               <internet></internet>
-              <sync></sync>
+              <syncStatus />
             </v-system-bar>
           </v-col>
           <v-col cols="4">
@@ -117,6 +98,9 @@
             </v-card>
           </v-col>
         </v-row>
+        <v-dialog v-model="dialog" width="500" persistent>
+          <syncDialog />
+        </v-dialog>
       </v-container>
     </v-main>
   </v-app>
@@ -124,35 +108,47 @@
 
 <script>
 import keyboard from '../src/components/Keyboard'
+import products from '../src/components/Products'
 import cartList from '../src/components/CartList'
 import clock from '../src/components/Clock'
 import internet from '../src/components/Internet'
-import sync from '../src/components/Sync'
-  export default {
-    name: 'App',
+// import syncDatabase from '../src/components/SyncDatabase'
+import syncStatus from '../src/components/SyncStatus'
+import syncDialog from '../src/components/SyncDialog'
+export default {
+  name: 'App',
 
-    data: () => ({
-      windowSizeHeight: 0,
-      user: {
-        initials: 'JD',
-        fullName: 'John Doe',
-        email: 'john.doe@doe.com',
-      },
-      loading: false,
-      selection: 1,
-    }),
-    created() {},
-    components: {
-      keyboard,
-      cartList,
-      clock,
-      internet,
-      sync
+  data: () => ({
+    windowSizeHeight: 0,
+    user: {
+      initials: 'JD',
+      fullName: 'John Doe',
+      email: 'john.doe@doe.com',
     },
-    methods: {
-      onResize() {
-        this.windowSizeHeight = window.innerHeight
-      },
+    loading: false,
+    selection: 1,
+    dialog: false
+  }),
+  mounted() {
+    this.$store.state.db.config.debug = false
+  },
+  components: {
+    keyboard,
+    cartList,
+    clock,
+    internet,
+    products,
+    syncStatus,
+    // syncDatabase,
+    syncDialog
+  },
+  methods: {
+    onResize() {
+      this.windowSizeHeight = window.innerHeight
+    },
+    syncStateDialog(){
+      this.$store.state.dialogSync = !this.$store.state.dialogSync
     }
-  };
+  }
+};
 </script>
