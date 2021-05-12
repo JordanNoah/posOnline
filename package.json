@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "browser-battery": "^2.0.0",
     "core-js": "^3.6.5",
     "localbase": "^0.7.5",
     "moment": "^2.29.1",

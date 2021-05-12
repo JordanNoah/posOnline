@@ -63,7 +63,7 @@
               </v-card>
               <v-spacer></v-spacer>
               <v-icon>fas fa-exclamation-triangle</v-icon>
-              <v-icon>fas fa-battery-full</v-icon>
+              <battery />
               <internet></internet>
               <syncStatus />
             </v-system-bar>
@@ -111,6 +111,7 @@ import keyboard from '../src/components/Keyboard'
 import products from '../src/components/Products'
 import cartList from '../src/components/CartList'
 import clock from '../src/components/Clock'
+import battery from '../src/components/Battery'
 import internet from '../src/components/Internet'
 import syncStatus from '../src/components/SyncStatus'
 import syncDialog from '../src/components/SyncDialog'
@@ -138,7 +139,7 @@ export default {
     internet,
     products,
     syncStatus,
-    // syncDatabase,
+    battery,
     syncDialog
   },
   computed:{
