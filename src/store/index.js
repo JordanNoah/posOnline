@@ -9,8 +9,7 @@ export default new Vuex.Store({
     numberOfAction:0,
     dialogSync:false,
     server:'http://192.168.100.10:3000',
-    medicinesSaved:0,
-    totalMedicines:0
+    syncStatus:false
   },
   mutations: {
     openDialogSync(state){

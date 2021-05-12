@@ -24,7 +24,7 @@
                         {{ user.email }}
                       </p>
                       <v-divider class="my-3"></v-divider>
-                        <v-btn depressed text @click="dialog=true">
+                        <v-btn depressed text @click="syncStateDialog()">
                           Sync Database
                         </v-btn>
                       <v-divider class="my-3"></v-divider>
@@ -58,7 +58,7 @@
               <v-card elevation="0" style="background-color:#e0e0e0" class="mx-1 px-1"><span>v: 0.01</span></v-card>
               <v-card elevation="0" style="background-color:#e0e0e0" class="mx-1 px-1">
                 <span>
-                  {{this.$store.state.numberOfAction}}
+                  {{this.$store.state.dialogSync}}
                 </span>
               </v-card>
               <v-spacer></v-spacer>
@@ -98,7 +98,7 @@
             </v-card>
           </v-col>
         </v-row>
-        <v-dialog v-model="dialog" width="500" persistent>
+        <v-dialog v-model="dialogState" width="500" persistent>
           <syncDialog />
         </v-dialog>
       </v-container>
@@ -112,7 +112,6 @@ import products from '../src/components/Products'
 import cartList from '../src/components/CartList'
 import clock from '../src/components/Clock'
 import internet from '../src/components/Internet'
-// import syncDatabase from '../src/components/SyncDatabase'
 import syncStatus from '../src/components/SyncStatus'
 import syncDialog from '../src/components/SyncDialog'
 export default {
@@ -141,6 +140,11 @@ export default {
     syncStatus,
     // syncDatabase,
     syncDialog
+  },
+  computed:{
+    dialogState() {
+      return this.$store.state.dialogSync
+    }
   },
   methods: {
     onResize() {

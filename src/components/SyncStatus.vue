@@ -7,10 +7,15 @@
 <script>
 // import axios from 'axios'
 export default {
-    data:()=>({
-        statusSync:false
-    }),
+    // data:()=>({
+    //     statusSync:true
+    // }),
     mounted(){
     },
+    computed:{
+        statusSync:function(){
+        return this.$store.state.syncStatus;
+        }
+    }
 }
 </script>

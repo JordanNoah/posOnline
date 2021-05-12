@@ -2,10 +2,10 @@
   <div>
     <v-card tile>
       <v-card-title class="d-flex justify-center headline grey lighten-4">
-        <span v-if="!this.sync && this.percentMedicine == 0 && this.percentClientes == 0">
+        <span v-if="!this.sync && this.totalClients == 0 && this.totalMedicines == 0">
           ¿Que desea sincronizar?
         </span>
-        <span v-else-if="!this.sync && this.percentMedicine == 100 && this.percentClientes == 100">
+        <span v-else-if="this.sync && this.percentMedicine == 100 && this.percentClientes == 100">
           Sincronizado
         </span>
         <span v-else>
@@ -15,12 +15,9 @@
           <span class="three">.</span>
         </span>
       </v-card-title>
-      {{this.sync}}
-      {{this.percentMedicine}}
-      {{this.percentClientes}}
     </v-card>
     <v-card tile>
-      <v-container v-if="!this.sync && this.percentMedicine < 100 && this.percentClientes < 100">
+      <v-container v-if="!this.sync && this.totalClients == 0 && this.totalMedicines == 0">
         <v-sheet class="pa-5">
           <v-switch v-model="whatSync" inset label="Medicinas" value="Medicinas"></v-switch>
           <v-switch v-model="whatSync" inset label="Clientes" value="Clientes"></v-switch>
@@ -36,7 +33,7 @@
               <v-progress-circular :rotate="360" :size="30" :width="3" :value="this.percentMedicine" color="teal"
                 class="text-button" style="font-size: 0.50rem !important;font-weight: 900;"
                 v-if="((this.addsMedicines/this.totalMedicines)*100).toFixed(0) < 100">
-                {{ this.percentMedicine === 'NaN' ? 0 : this.percentMedicine}}%
+                {{ this.percentMedicine}}%
               </v-progress-circular>
               <v-icon color="green" v-else>
                 far fa-check-circle
@@ -49,7 +46,7 @@
               <v-progress-circular :rotate="360" :size="30" :width="3" :value="this.percentClientes" color="teal"
                 class="text-button" style="font-size: 0.50rem !important;font-weight: 900;"
                 v-if="((this.addsClients/this.totalClients)*100).toFixed(0) < 100">
-                {{ this.percentClientes === 'NaN' ? 0 : this.percentClientes }}%
+                {{ this.percentClientes }}%
               </v-progress-circular>
               <v-icon color="green" v-else>
                 far fa-check-circle
@@ -57,14 +54,17 @@
             </p>
           </v-col>
           <v-col cols="4">
-            <icons icon="success" v-if="!this.sync && this.percentMedicine == 100 && this.percentClientes == 100" />
+            <icons icon="success" v-if="this.sync && (this.percentMedicine == 100 && this.percentClientes == 100)" />
             <icons icon="info" v-else />
           </v-col>
         </v-row>
       </v-container>
+    </v-card>
+    <v-card tile>
       <v-card-actions class="d-flex justify-end">
-        <v-btn elevation="0" color="red" dark>Cerrar</v-btn>
-        <v-btn elevation="0" color="green" @click="startSync" :disabled="this.whatSync.length==0">Sincronizar</v-btn>
+        <v-btn elevation="0" color="red" :disabled="(this.percentMedicine != 100 || this.percentClientes != 100)" @click="closeDialog()">Cerrar</v-btn>
+        <v-btn elevation="0" color="green" @click="startSync" :disabled="this.whatSync.length==0"
+          v-if="!this.sync">Sincronizar</v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -86,19 +86,23 @@ export default {
   },
   computed: {
     percentMedicine() {
-      this.checStatus()
       var precentReturn = 0;
       if(!Number.isNaN(((this.addsMedicines/this.totalMedicines)*100))){
         precentReturn = ((this.addsMedicines/this.totalMedicines)*100).toFixed(0);
+      }else{
+        precentReturn = 100
       }
+      this.checkStatus(precentReturn)
       return precentReturn;
     },
     percentClientes(){
-      this.checStatus()
       var precentReturn = 0;
       if(!Number.isNaN(((this.addsClients/this.totalClients)*100))){
         precentReturn = ((this.addsClients/this.totalClients)*100).toFixed(0);
+      }else{
+        precentReturn = 100
       }
+      this.checkStatus(precentReturn)
       return precentReturn;
     }
   },
@@ -106,16 +110,26 @@ export default {
     icons
   },
   methods: {
-    checStatus(){
-      if(((this.addsMedicines/this.totalMedicines)*100) == 100 && ((this.addsClients/this.totalClients)*100) == 100){
-        this.sync = false
+    checkStatus(precentReturn){
+      if(precentReturn != 100){
+        this.$store.state.syncStatus = true
+      }else{
+        this.$store.state.syncStatus = false
       }
-      if((((this.addsMedicines/this.totalMedicines)*100).toFixed(0))==100){
-        this.sync = false
-      }
+    },
+    closeDialog(){
+      this.sync=false,
+      this.whatSync=[],
+      this.finishSync=false,
+      this.totalMedicines=0,
+      this.addsMedicines=0,
+      this.totalClients=0,
+      this.addsClients=0
+      this.$store.commit('closeDialogSync')
     },
     startSync(){
       this.sync = true
+      this.$store.state.syncStatus = true;
        for (let i = 0; i < this.whatSync.length; i++) {
          switch(this.whatSync[i]){
            case 'Clientes':
@@ -134,6 +148,7 @@ export default {
       try{
         const res = await axios.get(this.$store.state.server+"/sync/medicine")
         this.totalMedicines = (res.data.length)
+        console.log(this.totalMedicines)
         for (let index = 0; index < res.data.length; index++) {
           const element = res.data[index];
           await this.$store.state.db.collection('medicines').add(element)
@@ -145,7 +160,7 @@ export default {
     },
     async SyncClients(){
       try{
-        const res = await axios.get(this.$store.state.server+"/sync/medicine")
+        const res = await axios.get(this.$store.state.server+"/sync/client")
         this.totalClients = (res.data.length)
         for (let index = 0; index < res.data.length; index++) {
           const element = res.data[index];
