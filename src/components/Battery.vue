@@ -40,8 +40,8 @@ export default {
     },
     watch: {
         batteryCharging:function(newVar){
-            console.log(newVar)
             if(newVar){
+                this.chargePercent = 10
                 setInterval(()=>{
                     if(this.chargePercent != 100){
                         this.chargePercent = this.chargePercent + 10
@@ -49,6 +49,8 @@ export default {
                         this.chargePercent = 10
                     }
                 },700)
+            }else{
+                this.chargePercent=10
             }
         }
     }

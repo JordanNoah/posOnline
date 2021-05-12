@@ -37,6 +37,14 @@
                       </v-btn>
                     </div>
                   </v-list-item-content>
+                    <v-card elevation="0" class="d-flex justify-end mx-1 px-1 text-overline">
+                      <span>
+                        v:
+                      </span> 
+                      <span> 
+                        0.01
+                      </span>
+                    </v-card>
                 </v-card>
               </v-menu>
               <v-toolbar-title class="mx-2">Pos Online</v-toolbar-title>
@@ -55,7 +63,6 @@
               <v-card elevation="0" style="background-color:#e0e0e0" class="mx-1 px-1">
                 <clock />
               </v-card>
-              <v-card elevation="0" style="background-color:#e0e0e0" class="mx-1 px-1"><span>v: 0.01</span></v-card>
               <v-card elevation="0" style="background-color:#e0e0e0" class="mx-1 px-1">
                 <span>
                   {{this.$store.state.dialogSync}}
