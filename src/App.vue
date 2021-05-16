@@ -28,7 +28,7 @@
                           Sync Database
                         </v-btn>
                       <v-divider class="my-3"></v-divider>
-                      <v-btn depressed rounded text>
+                      <v-btn depressed rounded text @click="downloadImg()">
                         Edit Account
                       </v-btn>
                       <v-divider class="my-3"></v-divider>
@@ -56,8 +56,8 @@
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </v-toolbar>
-            <v-card :height="this.windowSizeHeight - 74.4" style="overflow:auto" elevation="0" outlined tile>
-              <products />
+            <v-card :height="this.windowSizeHeight - 74.4" elevation="0" outlined tile>
+              <products :height="this.windowSizeHeight - 74.4" />
             </v-card>
             <v-system-bar>
               <v-card elevation="0" style="background-color:#e0e0e0" class="mx-1 px-1">
@@ -114,6 +114,7 @@
 </template>
 
 <script>
+
 import keyboard from '../src/components/Keyboard'
 import products from '../src/components/Products'
 import cartList from '../src/components/CartList'
@@ -134,10 +135,10 @@ export default {
     },
     loading: false,
     selection: 1,
-    dialog: false
+    dialog: false,
   }),
   mounted() {
-    this.$store.state.db.config.debug = false
+    // this.$store.state.db.config.debug = false
   },
   components: {
     keyboard,
@@ -160,7 +161,7 @@ export default {
     },
     syncStateDialog(){
       this.$store.state.dialogSync = !this.$store.state.dialogSync
-    }
+    },
   }
 };
 </script>

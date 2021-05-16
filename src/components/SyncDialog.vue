@@ -148,10 +148,18 @@ export default {
       try{
         const res = await axios.get(this.$store.state.server+"/sync/medicine")
         this.totalMedicines = (res.data.length)
-        console.log(this.totalMedicines)
-        for (let index = 0; index < res.data.length; index++) {
+        await this.$store.state.db.collection('medicines').delete()
+        console.log(res.data)
+        for (let index = 0; index < this.totalMedicines; index++) {
           const element = res.data[index];
-          await this.$store.state.db.collection('medicines').add(element)
+          const imageRes = await axios.get(element.image,{responseType:'arraybuffer'})
+          var idMedicine = element.idMedicine;
+          var name = element.name;
+          var imgBase64 = 'data:;base64,' + btoa(new Uint8Array(imageRes.data).reduce((data,byte)=>data + String.fromCharCode(byte),''))
+          var price = element.price;
+          var createdAt = element.createdAt;
+          var updatedAt = element.updatedAt;
+          await this.$store.state.db.collection('medicines').add({id:idMedicine,name:name,image:imgBase64,price:price,createdAt:createdAt,updatedAt:updatedAt})
           this.addsMedicines = index + 1
         }
       }catch (err){
