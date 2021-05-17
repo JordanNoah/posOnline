@@ -5,7 +5,7 @@
                 <v-container>
                     <v-row>
                         <v-col cols="3" v-for="i in item" :key="i.id" class="py-2">
-                            <v-card height="285">
+                            <v-card height="285" @click="addItemToCart(i)">
                                 <v-img :src="i.image" height="60%" contain>
                                     <template v-slot:placeholder>
                                         <v-row class="fill-height ma-0" align="center" justify="center">
@@ -45,14 +45,7 @@
     props: {
         height:null
     },
-    computed: {
-    //   items () {
-    //     return Array.from({ length: this.length }, (k, v) => v + 1)
-    //   },
-    //   length () {
-    //     return 7000
-    //   },
-    },
+    computed: {},
     async mounted () {
         this.items=await this.$store.state.db.collection('medicines').get();
     },
@@ -62,6 +55,11 @@
             for (var i = 0, j = val.length; i < j; i += chunk) {
                 this.itemsRow.push(val.slice(i, i + chunk));
             }
+        }
+    },
+    methods:{
+        addItemToCart(item){
+            this.$store.commit('addItemToCart',item)
         }
     }
   }

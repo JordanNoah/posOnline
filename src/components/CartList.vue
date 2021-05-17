@@ -10,17 +10,19 @@
               </v-icon>
               Carrito de compra
             </div>
-            <v-list-item-action>
-              <v-btn small depressed>
+            <v-list-item-action v-if="cartItems.length>0">
+              <v-fade-transition>
+                <v-btn small depressed @click="cleanCart()">
                 <v-icon class="mr-2" x-small>
                   fas fa-shopping-cart
                 </v-icon>
                 Empty cart
               </v-btn>
+              </v-fade-transition>
             </v-list-item-action>
           </v-subheader>
           <v-divider></v-divider>
-          <v-virtual-scroll :items="items" height="300" item-height="64">
+          <v-virtual-scroll :items="cartItems" height="300" item-height="64" id="cartItem" ref="cartItem">
             <template v-slot:default="{ item }">
               <v-list-item :key="item.id">
                 <v-list-item-avatar>
@@ -38,12 +40,12 @@
                     <strong>{{ item.name }}</strong>
                   </v-list-item-title>
                   <v-list-item-subtitle>
-                    $ {{item.price.toFixed(2)}}
+                    $ {{item.price.toFixed(2)}} <strong>x</strong> {{item.quantity}}
                   </v-list-item-subtitle>
                 </v-list-item-content>
 
                 <v-list-item-action>
-                  <v-btn fab small depressed>
+                  <v-btn fab small depressed @click="removeItemCart(item.id)">
                     <v-icon>
                       far fa-times-circle
                     </v-icon>
@@ -61,12 +63,49 @@
 </template>
 
 <script>
+import scrollIntoView from 'scroll-into-view-if-needed'
   export default {
     data: () => ({
-      items:[]
+      autoScroll:true,
+      index:0
     }),
-    async mounted(){
-      this.items=await this.$store.state.db.collection('medicines').get();
+    computed:{
+      cartItems:function(){
+        return this.$store.state.cartItems;
+      },
+    },
+    watch:{
+      cartItems:function(newCart){
+        if(this.index>newCart.length){
+          this.autoScroll = false
+        }else if(newCart.length == this.index){
+          this.autoScroll = false
+          scrollIntoView(node, {
+            behavior: 'smooth',
+            block: 'center',
+            boundary: document.getElementById('example-boundary'),
+          });
+        }else{
+          this.autoScroll = true
+        }
+        this.index = newCart.length
+      },
+    },
+    updated:function(){
+      if(this.autoScroll){
+        const caritem = document.getElementById('cartItem')
+        caritem.scrollTo(0,caritem.getElementsByClassName('v-virtual-scroll__container')[0].scrollHeight)
+      }
+    },
+    methods: {
+      removeItemCart(idItem){
+        this.autoScroll=false
+        this.$store.commit('removeItemCart',idItem)
+      },
+      cleanCart(){
+        this.autoScroll=false
+        this.$store.commit('cleanCart')
+      }
     }
   }
 </script>

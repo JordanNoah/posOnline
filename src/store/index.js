@@ -9,7 +9,10 @@ export default new Vuex.Store({
     numberOfAction:0,
     dialogSync:false,
     server:'http://192.168.100.10:3000',
-    syncStatus:false
+    syncStatus:false,
+    ///cart
+    cartItems:[]
+    ///
   },
   mutations: {
     openDialogSync(state){
@@ -17,6 +20,28 @@ export default new Vuex.Store({
     },
     closeDialogSync(state){
       state.dialogSync = false
+    },
+    addItemToCart(state,item){
+      var objectItem = null;
+      var index = state.cartItems.findIndex(x => x.id == item.id)
+      if (index > -1) {
+        objectItem = state.cartItems[index]
+        objectItem.quantity += 1
+        state.cartItems.splice(index,1,objectItem);
+      } else {
+        objectItem = item
+        objectItem.quantity = 1
+        state.cartItems.push(objectItem);
+      }
+    },
+    removeItemCart(state,idItem){
+      var index = state.cartItems.findIndex(x => x.id == idItem)
+      if(index > -1){
+        state.cartItems.splice(index,1)
+      }
+    },
+    cleanCart(state){
+      state.cartItems = [];
     }
   },
   actions: {

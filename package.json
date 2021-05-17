@@ -17,6 +17,7 @@
     "rive-canvas": "^0.7.3",
     "rive-js": "^0.7.7",
     "roboto-fontface": "*",
+    "scroll-into-view-if-needed": "^2.2.28",
     "vue": "^2.6.11",
     "vue-grid-layout": "^2.3.12",
     "vue-rive": "0.0.3",
