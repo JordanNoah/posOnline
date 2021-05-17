@@ -1,25 +1,31 @@
 <template>
-  <div>
-      <v-virtual-scroll
-        :bench="benched"
-        :items="itemsRow"
-        :height="height"
-        item-height="300"
-        width="100%"
-      >
-        <template v-slot:default="{ item }">
-            <v-container>
-                <v-row>
-                    <v-col cols="3" v-for="i in item" :key="i.id" class="py-2">
-                        <v-card height="285">
-                            <v-img :src="i.image"></v-img>
-                            <v-card-title class="body-1 pa-3 font-weight-medium text-truncate d-inline-block" style="max-width:100%">
-                    {{i.name}}
-                </v-card-title>
-                        </v-card>
-                    </v-col>
-                </v-row>
-                <!-- <v-row>
+    <div>
+        <v-virtual-scroll :bench="benched" :items="itemsRow" :height="height" item-height="300" width="100%">
+            <template v-slot:default="{ item }">
+                <v-container>
+                    <v-row>
+                        <v-col cols="3" v-for="i in item" :key="i.id" class="py-2">
+                            <v-card height="285">
+                                <v-img :src="i.image" height="60%" contain>
+                                    <v-container class="d-flex justify-end pa-0">
+                                        <span class="pa-1" style="background-color:rgba(255,255,255,0.5)">
+                                            $ {{i.price}}
+                                        </span>
+                                    </v-container>
+                                </v-img>
+                                <v-container style="height:40%;padding-bottom:0px;">
+                                    <div class="row" style="height:100%;">
+                                    <div class="col-12 text-left" style="height:100%;overflow: hidden;text-overflow: ellipsis;">
+                                        Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus.
+                                        Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus.
+                                        Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus.
+                                    </div>
+                                </div>
+                                </v-container>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                    <!-- <v-row>
                     <v-col cols="3">
                         <v-card height="auto">
                             <v-img
@@ -31,10 +37,10 @@
                         </v-card>
                     </v-col>
                 </v-row> -->
-            </v-container>
-        </template>
-      </v-virtual-scroll>
-  </div>
+                </v-container>
+            </template>
+        </v-virtual-scroll>
+    </div>
 </template>
 <script>
   export default {
