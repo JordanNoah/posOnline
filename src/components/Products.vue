@@ -1,42 +1,35 @@
 <template>
     <div>
-        <v-virtual-scroll :bench="benched" :items="itemsRow" :height="height" item-height="300" width="100%">
+        <v-virtual-scroll :items="itemsRow" :height="height" item-height="300" width="100%">
             <template v-slot:default="{ item }">
                 <v-container>
                     <v-row>
                         <v-col cols="3" v-for="i in item" :key="i.id" class="py-2">
                             <v-card height="285">
                                 <v-img :src="i.image" height="60%" contain>
+                                    <template v-slot:placeholder>
+                                        <v-row class="fill-height ma-0" align="center" justify="center">
+                                            <v-progress-circular indeterminate color="grey lighten-5">
+                                            </v-progress-circular>
+                                        </v-row>
+                                    </template>
                                     <v-container class="d-flex justify-end pa-0">
-                                        <span class="pa-1" style="background-color:rgba(255,255,255,0.5)">
-                                            $ {{i.price}}
+                                        <span class="py-1 px-2 white--text" style="background-color:rgba(0,0,0,0.4)">
+                                            $ {{i.price.toFixed(2)}}
                                         </span>
                                     </v-container>
                                 </v-img>
                                 <v-container style="height:40%;padding-bottom:0px;">
                                     <div class="row" style="height:100%;">
-                                    <div class="col-12 text-left" style="height:100%;overflow: hidden;text-overflow: ellipsis;">
-                                        Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus.
-                                        Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus.
-                                        Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus.
+                                        <div class="col-12 text-left"
+                                            style="height:100%;overflow: hidden;text-overflow: ellipsis;">
+                                            {{i.name}}
+                                        </div>
                                     </div>
-                                </div>
                                 </v-container>
                             </v-card>
                         </v-col>
                     </v-row>
-                    <!-- <v-row>
-                    <v-col cols="3">
-                        <v-card height="auto">
-                            <v-img
-              :src="item.image"
-              height="auto"
-              class="grey darken-4"
-            ></v-img>
-            {{item.id}}
-                        </v-card>
-                    </v-col>
-                </v-row> -->
                 </v-container>
             </template>
         </v-virtual-scroll>
@@ -45,7 +38,7 @@
 <script>
   export default {
     data: () => ({
-      benched: 1,
+      benched: 0,
       items:[],
       itemsRow:[]
     }),
