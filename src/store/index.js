@@ -27,12 +27,12 @@ export default new Vuex.Store({
       if (index > -1) {
         objectItem = state.cartItems[index]
         objectItem.quantity += 1
-        state.cartItems.splice(index,1,objectItem);
+        state.cartItems.splice(index,1);
       } else {
         objectItem = item
         objectItem.quantity = 1
-        state.cartItems.push(objectItem);
       }
+      state.cartItems.push(objectItem);
     },
     removeItemCart(state,idItem){
       var index = state.cartItems.findIndex(x => x.id == idItem)
