@@ -10,6 +10,7 @@ export default new Vuex.Store({
     dialogSync:false,
     server:'http://192.168.100.10:3000',
     syncStatus:false,
+    configAppDialog:false,
     ///cart
     cartItems:[]
     ///
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     },
     cleanCart(state){
       state.cartItems = [];
+    },
+    ConfigAppDialog(state){
+      state.configAppDialog = !state.configAppDialog;
     }
   },
   actions: {

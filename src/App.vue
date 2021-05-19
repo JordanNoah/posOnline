@@ -24,11 +24,11 @@
                         {{ user.email }}
                       </p>
                       <v-divider class="my-3"></v-divider>
-                        <v-btn depressed text @click="syncStateDialog()">
-                          Sync Database
-                        </v-btn>
+                      <v-btn depressed text @click="syncStateDialog()">
+                        Sync Database
+                      </v-btn>
                       <v-divider class="my-3"></v-divider>
-                      <v-btn depressed rounded text @click="downloadImg()">
+                      <v-btn depressed rounded text @click="syncConfigDialog()">
                         Edit Account
                       </v-btn>
                       <v-divider class="my-3"></v-divider>
@@ -37,14 +37,14 @@
                       </v-btn>
                     </div>
                   </v-list-item-content>
-                    <v-card elevation="0" class="d-flex justify-end mx-1 px-1 text-overline">
-                      <span>
-                        v:
-                      </span> 
-                      <span> 
-                        0.01
-                      </span>
-                    </v-card>
+                  <v-card elevation="0" class="d-flex justify-end mx-1 px-1 text-overline">
+                    <span>
+                      v:
+                    </span>
+                    <span>
+                      0.01
+                    </span>
+                  </v-card>
                 </v-card>
               </v-menu>
               <v-toolbar-title class="mx-2">Pos Online</v-toolbar-title>
@@ -52,9 +52,9 @@
               <v-btn icon>
                 <v-icon>mdi-magnify</v-icon>
               </v-btn>
-              <v-btn icon>
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
+              <div>
+                <themeSwitch />
+              </div>
             </v-toolbar>
             <v-card :height="this.windowSizeHeight - 74.4" elevation="0" outlined tile>
               <products :height="this.windowSizeHeight - 74.4" />
@@ -108,6 +108,11 @@
         <v-dialog v-model="dialogState" width="500" persistent>
           <syncDialog />
         </v-dialog>
+        <!--  -->
+        <v-dialog v-model="dialogConfig" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
+          <configApp />
+        </v-dialog>
+        <!--  -->
       </v-container>
     </v-main>
   </v-app>
@@ -123,11 +128,14 @@ import battery from '../src/components/Battery'
 import internet from '../src/components/Internet'
 import syncStatus from '../src/components/SyncStatus'
 import syncDialog from '../src/components/SyncDialog'
+import themeSwitch from '../src/components/ThemeSwitch'
+import configApp from '../src/components/ConfigApp'
 export default {
   name: 'App',
 
   data: () => ({
     windowSizeHeight: 0,
+    switch1: true,
     user: {
       initials: 'JD',
       fullName: 'John Doe',
@@ -136,6 +144,8 @@ export default {
     loading: false,
     selection: 1,
     dialog: false,
+    //
+    // dialogConfig: true,
   }),
   mounted() {
     // this.$store.state.db.config.debug = false
@@ -148,11 +158,16 @@ export default {
     products,
     syncStatus,
     battery,
-    syncDialog
+    syncDialog,
+    themeSwitch,
+    configApp
   },
   computed:{
     dialogState() {
       return this.$store.state.dialogSync
+    },
+    dialogConfig(){
+      return this.$store.state.configAppDialog
     }
   },
   methods: {
@@ -162,6 +177,9 @@ export default {
     syncStateDialog(){
       this.$store.state.dialogSync = !this.$store.state.dialogSync
     },
+    syncConfigDialog(){
+      this.$store.commit('ConfigAppDialog')
+    }
   }
 };
 </script>
